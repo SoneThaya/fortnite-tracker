@@ -28,7 +28,7 @@ function App() {
 
 
   useEffect(() => {
-    axios.get('https://cors-anywhere.herokuapp.com/https://api.fortnitetracker.com/v1/store', {
+    axios.get('https://api.fortnitetracker.com/v1/store', {
       headers: {
         'TRN-Api-Key': process.env.REACT_APP_API_KEY,
         'Accept': 'application/json',
