@@ -34,10 +34,10 @@ const Store = ({ imageUrl, name, rarity, vBucks, manifestId, storeCategory }) =>
             {name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {rarity}
+            rarity: {rarity}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {vBucks}
+            {vBucks} vBucks
           </Typography>
         </CardContent>
       </CardActionArea>
