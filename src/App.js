@@ -3,23 +3,29 @@ import './App.css';
 import axios from 'axios'
 import Store from './components/Store'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root')
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     flexGrow: 1,
+//   },
+//   paper: {
+//     padding: theme.spacing(2),
+//     textAlign: 'center',
+//     color: theme.palette.text.secondary,
+//   },
+// }));
 
 
 function App() {
   const [itemShop, setItemShop] = useState([])
+  const [show, setShow] = useState({})
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+
 
   useEffect(() => {
     axios.get('https://cors-anywhere.herokuapp.com/https://fortnite-server-api.herokuapp.com/api/store', {
@@ -35,7 +41,7 @@ function App() {
       .catch(err => console.log(err))
   }, [])
 
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <div className="App">
@@ -44,7 +50,10 @@ function App() {
       <Grid container spacing={3}>
         
         {itemShop.map(items => (
-          <Grid item sx={12} sm={6} md={4} key={items.manifestId}>
+          <Grid item sx={12} sm={6} md={4} key={items.manifestId} onClick={() => {
+            setModalIsOpen(true);
+            setShow(items)
+          }}>
         <Store
           imageUrl={items.imageUrl}
           key={items.manifestId}
@@ -53,9 +62,22 @@ function App() {
           vBucks={items.vBucks}
           storeCategory={items.storeCategory}
             />
-            <Paper className={classes.paper}>xs=6 sm=3</Paper>
+           
             </Grid>
-      ))}
+        ))}
+        
+        <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+            
+          <div className='modal-container'>
+            <img src={show.imageUrl} alt={show.title} />
+            <p>{show.name}</p>
+            <p>{show.rarity}</p>
+            <p>{show.vBucks}</p>
+            <p>{show.storeCategory}</p>
+            
+          </div>
+              
+        </Modal>
       </Grid>
     </div>
   );
