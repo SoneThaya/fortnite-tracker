@@ -28,11 +28,10 @@ function App() {
 
 
   useEffect(() => {
-    axios.get('https://api.fortnitetracker.com/v1/store', {
+    axios.get('https://cors-anywhere.herokuapp.com/https://fortnite-server-api.herokuapp.com/api/store', {
       headers: {
-        'TRN-Api-Key': process.env.REACT_APP_API_KEY,
-        'Accept': 'application/json',
-        'Accept-Encoding': 'application/gzip'
+        'TRN-Api-Key': process.env.REACT_APP_API_KEY
+        
       }
     })
       .then(res => {
