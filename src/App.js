@@ -71,9 +71,9 @@ function App() {
           <div className='modal-container'>
             <img src={show.imageUrl} alt={show.title} />
             <p>{show.name}</p>
-            <p>{show.rarity}</p>
-            <p>{show.vBucks}</p>
-            <p>{show.storeCategory}</p>
+            <p>rarity: {show.rarity}</p>
+            <p>{show.vBucks} vBucks</p>
+            
             
           </div>
               
