@@ -4,10 +4,34 @@ import axios from 'axios'
 import Store from './components/Store'
 import Grid from '@material-ui/core/Grid'
 // import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
 
-import Modal from 'react-modal';
+// import Modal from 'react-modal';
 
-Modal.setAppElement('#root')
+// Modal.setAppElement('#root')
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -22,9 +46,13 @@ Modal.setAppElement('#root')
 
 
 function App() {
+  const classes = useStyles();
+
   const [itemShop, setItemShop] = useState([])
   const [show, setShow] = useState({})
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  //const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [modalStyle] = useState(getModalStyle);
 
 
   useEffect(() => {
@@ -45,13 +73,26 @@ function App() {
 
   return (
     <div className="App">
+      
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <h2>I am a modal</h2>
+          
+          
+        </div>
+      </Modal>
+
       <h1>Fortnite Fortnite</h1>
 
       <Grid container spacing={3}>
         
         {itemShop.map(items => (
           <Grid item sx={12} sm={6} md={4} key={items.manifestId} onClick={() => {
-            setModalIsOpen(true);
+            //setModalIsOpen(true);
+            setOpen(true);
             setShow(items)
           }}>
         <Store
@@ -66,7 +107,10 @@ function App() {
             </Grid>
         ))}
         
-        <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+        <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+      >
             
           <div className='modal-container'>
             <img src={show.imageUrl} alt={show.title} />
