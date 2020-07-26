@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid'
 // import { makeStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
+import { Button, Input } from '@material-ui/core';
 
 // import Modal from 'react-modal';
 
@@ -50,9 +51,13 @@ function App() {
 
   const [itemShop, setItemShop] = useState([])
   const [show, setShow] = useState({})
-  //const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
   const [open, setOpen] = useState(false)
   const [modalStyle] = useState(getModalStyle);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  
 
 
   useEffect(() => {
@@ -71,6 +76,12 @@ function App() {
 
   // const classes = useStyles();
 
+  const signUp = (e) => {
+    e.prevent.default()
+
+    
+  }
+
   return (
     <div className="App">
       
@@ -79,11 +90,33 @@ function App() {
         onClose={() => setOpen(false)}
       >
         <div style={modalStyle} className={classes.paper}>
-          <h2>I am a modal</h2>
           
+          <form className="app__signup">
+            <Input
+              placeholder="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Input
+              placeholder="email"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              placeholder="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit" onClick={signUp}>Sign Up</Button>
+          </form>
           
         </div>
       </Modal>
+
+      <Button onClick={() => setOpen(true)}>Sign Up</Button>
 
       <h1>Fortnite Fortnite</h1>
 
@@ -91,8 +124,7 @@ function App() {
         
         {itemShop.map(items => (
           <Grid item sx={12} sm={6} md={4} key={items.manifestId} onClick={() => {
-            //setModalIsOpen(true);
-            setOpen(true);
+            setModalIsOpen(true);
             setShow(items)
           }}>
         <Store
@@ -108,8 +140,8 @@ function App() {
         ))}
         
         <Modal
-        open={open}
-        onClose={() => setOpen(false)}
+        open={modalIsOpen}
+        onClose={() => setModalIsOpen(false)}
       >
             
           <div className='modal-container'>
