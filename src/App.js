@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Button, Input } from '@material-ui/core';
+import { db, auth } from './firebase'
 
 // import Modal from 'react-modal';
 
@@ -57,6 +58,27 @@ function App() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
+  const [user, setUser] = useState(null)
+  const [openSignIn, setOpenSignIn] = useState(false)
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        // user has logged in
+        console.log(authUser)
+        setUser(authUser);
+
+      } else {
+        // user has logged out ...
+        setUser(null);
+      }
+    })
+
+    return () => {
+      // perform some clean up action
+      unsubscribe();
+    }
+  }, [user, username])
   
 
 
@@ -77,9 +99,28 @@ function App() {
   // const classes = useStyles();
 
   const signUp = (e) => {
-    e.prevent.default()
+    e.preventDefault()
 
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        return authUser.user.updateProfile({
+          displayName: username,
+        })
+      })
+      .catch((error) => alert(error.message))
     
+      setOpen(false);
+  }
+
+  const signIn = (e) => {
+    e.preventDefault()
+
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => alert(error.message))
+    
+    setOpenSignIn(false)
   }
 
   return (
@@ -116,7 +157,43 @@ function App() {
         </div>
       </Modal>
 
-      <Button onClick={() => setOpen(true)}>Sign Up</Button>
+      <Modal
+        open={openSignIn}
+        onClose={() => setOpenSignIn(false)}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          
+          <form className="app__signup">
+            
+            <Input
+              placeholder="email"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              placeholder="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit" onClick={signIn}>Sign In</Button>
+          </form>
+          
+        </div>
+      </Modal>
+
+      {user ? (
+        <Button onClick={() => auth.signOut()}>Logout</Button>
+      ) : (
+        <div className="app__loginContainer">
+          <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
+          <Button onClick={() => setOpen(true)}>Sign Up</Button>
+        </div>
+        
+      )}
+
+      
 
       <h1>Fortnite Fortnite</h1>
 
