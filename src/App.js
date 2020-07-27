@@ -61,6 +61,25 @@ function App() {
   const [user, setUser] = useState(null)
   const [openSignIn, setOpenSignIn] = useState(false)
 
+  const [comments, setComments] = useState([])
+  const [comment, setComment] = useState('')
+
+  // useEffect(() => {
+  //   let unsubscribe;
+  //   if (manifestId) {
+  //     unsubscribe = db
+  //       .collection("comments")
+  //       .doc(manifestId)
+  //       .onSnapshot((snapshot) => {
+  //         setComments(snapshot.docs.map((doc) => doc.data()))
+  //       })
+  //   }
+
+  //   return () => {
+  //     unsubscribe();
+  //   }
+  // }, [manifestId])
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
@@ -122,6 +141,13 @@ function App() {
     
     setOpenSignIn(false)
   }
+
+  // const postComment = (e) => {
+  //   e.preventDefault()
+
+  //   db.collection("comments")
+  //     .doc(manifestId).collection
+  // }
 
   return (
     <div className="App">
@@ -222,12 +248,35 @@ function App() {
       >
             
           <div className='modal-container'>
-            <img src={show.imageUrl} alt={show.title} />
-            <p>{show.name}</p>
-            <p>rarity: {show.rarity}</p>
-            <p>{show.vBucks} vBucks</p>
+            <div className="modal-items">
+              <img src={show.imageUrl} alt={show.title} />
+              <p>{show.name}</p>
+              <p>rarity: {show.rarity}</p>
+              <p>{show.vBucks} vBucks</p>
+
+              <form className="post__commentBox">
+                <input
+                  className="post__input"
+                  type="text"
+                  placeholder="Add a comment..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <button
+                className="post__button"
+                disabled={!comment}
+                type="submit"
+                
+                >
+                  Post
+                </button>
+            </form>
+
+            </div>
             
             
+                
+
           </div>
               
         </Modal>

@@ -59,16 +59,49 @@ img {
 }
 
 .modal-container {
-  width: 80%;
-  height: 80%;
+  width: 60%;
+  height: 60%;
+  background-color: lightslategray;
+  display: flex;
+  margin: auto;
 }
-.modal-container img {
+
+.modal-items {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+/* .modal-container img {
   width: 100%;
   height: 100%;
-}
+} */
 
 .app__signup {
   display: flex;
   text-align: center;
   flex-direction: column;
+}
+
+.post__commentBox {
+  display: flex;
+  margin-top: 10px;
+}
+
+.post__input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+}
+
+.post__button {
+  flex: 0;
+  border: none;
+  color: #6082a3;
+  border-top: 1px solid lightgray;
+  background-color: transparent;
 }
